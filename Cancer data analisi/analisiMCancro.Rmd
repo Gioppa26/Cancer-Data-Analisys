@@ -1,0 +1,142 @@
+---
+title: "Cancer"
+output: html_document
+date: "2022-07-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+## 
+
+```{r parte 1}
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+secondo = read.csv(file = "Cancro dataset/total-cancer-deaths-by-type.csv")
+colnames(secondo)[7]<-"CancroPolmoni"
+
+d2 = secondo %>%
+  mutate(isItalia = (Code == "ITA")) %>%
+  filter(Entity == "Italy")
+  
+  ggplot(data = d2, aes(x = Year)) +
+  geom_line(mapping = aes(y= CancroPolmoni), size = 2, color = "blue") +
+  labs(title="Morti per cancro ai polmoni in Italia",
+       subtitle = "Qual'è il numero di morti di cancro ai polmoni in Italia?",
+        x = "Anno",
+       y = "Numero morti") +
+  theme_bw()
+  
+aux = secondo %>%
+  mutate(isItalia = (Code == "ITA")) %>%
+  filter(Entity == "Italy" | Entity =="France")
+    
+  ggplot(data = aux,aes(x = Year, y= CancroPolmoni, color = Entity)) +
+  geom_line(aes(linetype = isItalia), size = 1.5) +
+  labs(title="Morti per cancro ai polmoni",
+       subtitle = "Qual'è il confronto tra le vittime del cancro ai polmoni tra Francia e Italia?",
+       x = "Anno",
+       y = "Numero morti",
+       color = "Stato") +
+  theme_bw() +
+    scale_linetype_manual(values = c("dashed", "solid"), guide = "none")
+    
+
+```
+
+```{r parte 2}
+
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+third = read_csv("Cancro dataset/sales-of-cigarettes-per-adult-per-day.csv")
+colnames(third)[4]<-"Sigarette"
+
+
+d3 = third %>%
+  filter(Entity == "Italy" & Year >= 1990)
+  
+  ggplot(data = d3, mapping = aes(x = Sigarette)) +
+  geom_bar(fill = "lightgreen") +
+     labs(title="Numero di sigarette vendure al giorno dal 1990 al 2010",
+       subtitle = "Una persona quante sigarette compra giornalmente?",
+       x = "Numero di sigarette",
+       y = "Count") +
+  theme_bw()
+    
+    
+
+
+```
+
+```{r parte 3}
+
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+quarto = read_csv("Cancro dataset/number-of-people-with-cancer-by-age.csv")
+colnames(quarto)[4]<-"Under5"
+colnames(quarto)[5]<-"Under50"
+
+d4 = quarto %>%
+  filter( Year >= 2000 & Entity == "Italy")
+
+ggplot(data = d4, aes(x = Year, y = Under5)) +
+  geom_line(size = 1.5, color ="green") +
+   labs(title="Bambini in Italia che hanno il cancro",
+       subtitle = "Quanti bambini in Italia sono affetti di cancro?",
+       x = "Anno",
+       y = "Numero casi") +
+  theme_bw()
+
+d5 = quarto %>%
+  filter( Year >= 2000 & ( Entity == "Italy" | Entity == "France" | Entity == "England" | Entity == "Germany"))
+
+ggplot(data = d5, aes(x = Year, y = Under50, color = Entity)) +
+  geom_line(size = 1.5 , alpha = 0.8) +
+  labs(title="Persone tra i 18 e i 49 anni ad avere il cancro",
+       subtitle = "Quante sono le persone italiane sotto i 50 anni che hanno il cancro rispetto a Francia,Inghilterra e Germania?",
+       x = "Anno",
+       y = "Numero casi",
+       color = "Stato") +
+  theme_bw()
+
+
+```
+
+```{r parte 4}
+
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+quinto = read.csv(file = "Cancro dataset/total-cancer-deaths-by-type.csv")
+colnames(quinto)[7]<-"CancroPolmoni"
+
+d6 = quinto %>%
+  filter(Entity == "World")
+
+ggplot(data = d6, aes(x = Year, y = CancroPolmoni)) +
+  geom_line(size = 1.5, color ="orange") +
+   labs(title="Morti dovute al cancro ai polmoni nel Mondo",
+       subtitle = "Qual'è stato l'andamento delle morti per cancro ai polmoni nel mondo?",
+       x = "Anno",
+       y = "Numero morti") +
+  theme_bw()
+
+
+```
+
+
